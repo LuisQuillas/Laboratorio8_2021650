@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="base :: head('Listado de posts')">
+</head>
+<body>
+<nav th:replace="base :: navbar"></nav>
+
+<div class="container" style="margin-top: 80px;">
+    <h3>Lista de Post</h3>
+    <br>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Titulo</th>
+            <th>Autor</th>
+            <th>Resumen</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p : ${lista}">
+            <td th:text="${p.id_Post}"></td>
+            <td th:text="${p.title}"></td>
+            <td th:text="${p.user != null ? p.user.firstname + ' ' + p.user.lastname : '-'}"></td>
+            <td th:text="${p.summary}"></td>
+            <td>
+                <a th:if="${session.rol != null and (session.rol == 'admin' or (p.user != null and p.user.id_user == usuarioActualId))}"
+                   th:href="@{'/post/edit?id=' + ${p.id_Post}}" class="btn btn-primary btn-sm">Editar</a>
+                <a th:if="${session.rol != null and (session.rol == 'admin' or (p.user != null and p.user.id_user == usuarioActualId))}"
+                   th:href="@{'/post/borrar?id=' + ${p.id_Post}}" class="btn btn-danger btn-sm"
+                   onclick="return confirm('¿Seguro que desea borrar este post?');">Borrar</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

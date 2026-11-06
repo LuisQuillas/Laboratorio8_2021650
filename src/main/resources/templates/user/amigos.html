@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="base :: head('Amigos')">
+</head>
+<body>
+<nav th:replace="base :: navbar"></nav>
+
+<div class="container" style="margin-top: 80px;">
+    <h2>Amigos</h2>
+
+    <h4>Solicitudes pendientes</h4>
+    <table class="table table-sm table-bordered" th:if="${!solicitudesPendientes.isEmpty()}">
+        <tr>
+            <th>De</th>
+            <th>Correo</th>
+            <th></th>
+        </tr>
+        <tr th:each="s : ${solicitudesPendientes}">
+            <td th:text="${s.solicitante.firstname} + ' ' + ${s.solicitante.lastname}"></td>
+            <td th:text="${s.solicitante.email}"></td>
+            <td>
+                <form th:action="@{'/user/amistad/aceptar'}" method="post" style="display:inline">
+                    <input type="hidden" name="id" th:value="${s.id_amistad}" />
+                    <button type="submit" class="btn btn-success btn-sm">Aceptar</button>
+                </form>
+                <form th:action="@{'/user/amistad/rechazar'}" method="post" style="display:inline">
+                    <input type="hidden" name="id" th:value="${s.id_amistad}" />
+                    <button type="submit" class="btn btn-danger btn-sm">Rechazar</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+    <p th:if="${solicitudesPendientes.isEmpty()}" class="text-muted">No tienes solicitudes pendientes.</p>
+
+    <h4>Mis amigos</h4>
+    <ul th:if="${!amistades.isEmpty()}">
+        <li th:each="a : ${amistades}"
+            th:with="amigo = ${a.solicitante.id_user == usuarioActualId ? a.receptor : a.solicitante}"
+            th:text="${amigo.firstname} + ' ' + ${amigo.lastname} + ' (' + ${amigo.email} + ')'"></li>
+    </ul>
+    <p th:if="${amistades.isEmpty()}" class="text-muted">Aún no tienes amigos agregados.</p>
+
+    <h4>Todos los usuarios</h4>
+    <table class="table table-sm table-bordered">
+        <tr>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th></th>
+        </tr>
+        <tr th:each="u : ${usuarios}">
+            <td th:text="${u.firstname} + ' ' + ${u.lastname}"></td>
+            <td th:text="${u.email}"></td>
+            <td>
+                <form th:action="@{'/user/amistad/solicitar'}" method="post" style="display:inline">
+                    <input type="hidden" name="id" th:value="${u.id_user}" />
+                    <button type="submit" class="btn btn-info btn-sm">Enviar solicitud</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

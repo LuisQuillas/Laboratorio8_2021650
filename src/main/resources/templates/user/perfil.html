@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="base :: head('Mi perfil')">
+</head>
+<body>
+<nav th:replace="base :: navbar"></nav>
+
+<div class="container" style="margin-top: 80px; max-width: 600px;">
+    <h2>Mi perfil</h2>
+    <hr/>
+    <dl class="row">
+        <dt class="col-sm-3">Nombre</dt>
+        <dd class="col-sm-9" th:text="${usuario.firstname} + ' ' + ${usuario.lastname}"></dd>
+
+        <dt class="col-sm-3">Correo</dt>
+        <dd class="col-sm-9" th:text="${usuario.email}"></dd>
+
+        <dt class="col-sm-3">Rol</dt>
+        <dd class="col-sm-9" th:text="${usuario.id_role != null ? usuario.id_role.role_name : '-'}"></dd>
+
+        <dt class="col-sm-3">Introducción</dt>
+        <dd class="col-sm-9" th:text="${usuario.intro}"></dd>
+
+        <dt class="col-sm-3">Perfil</dt>
+        <dd class="col-sm-9" th:text="${usuario.profile}"></dd>
+    </dl>
+
+    <a class="btn btn-primary" th:href="@{'/user/editar'}">Editar perfil</a>
+    <a class="btn btn-secondary" th:href="@{'/user/amigos'}">Ver amigos</a>
+</div>
+</body>
+</html>
